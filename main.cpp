@@ -11,8 +11,7 @@ class Customer;
 void storeData(Customer customers[]);
 void determineCoins(Customer customers[]);
 int displayMenu();
-void getName();
-void searchArray();
+int findName(std::string name, Customer customers[]);
 void displayCoins();
 void writeData();
 
@@ -48,7 +47,7 @@ public:
 int main() {
 
     Customer customers[NUMBEROFCUSTOMERS];
-    int option;
+    int option; std::string name; int index;
     std::ofstream outFile;
 
     outFile.open("/Users/melodyflavel/CLionProjects/CoinsCalculator/change.csv");
@@ -65,8 +64,11 @@ int main() {
         option = displayMenu();
         switch(option){
             case 1:
-                // Get name from user
-                // Search array for name
+                std::cout << "Please enter a name: ";
+                std::cin >> name;
+                index = findName(name, customers);
+                std::cout << "Index: " << index;
+                std::cout << customers[index].getName();
                 // Display change
                 break;
             case 2:
@@ -148,16 +150,19 @@ int displayMenu(){
     return option;
 }
 
-void getName(){
+int findName(std::string name, Customer customers[]){
 
-}
-
-void searchArray(){
-
+    int indexAt = -1;
+    for(int i = 0; i < NUMBEROFCUSTOMERS; i++){
+        if(name == customers[i].getName()){
+            indexAt = i;
+        }
+    }
+    return indexAt;
 }
 
 void displayCoins(){
-
+  
 }
 
 void writeData(){

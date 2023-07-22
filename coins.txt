@@ -8,4 +8,3 @@ Jeff 5
 Ramona 50
 Abby 20
 Mackenzie 30
-Rob 75
