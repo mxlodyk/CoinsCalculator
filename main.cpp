@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <array>
 #include <algorithm>
 
 const int DENOMINATIONS = 4;
@@ -60,8 +59,6 @@ int main() {
                 std::cout << "Please enter a name: ";
                 std::cin >> name;
                 index = findName(name, customers);
-                std::cout << "Index: " << index;
-                std::cout << customers[index].getName();
                 displayCoins(customers, index);
                 break;
             case 2:
@@ -84,7 +81,7 @@ void storeData(Customer customers[]){
     std::string name;
     int change;
 
-    inFile.open("/Users/melodyflavel/CLionProjects/CoinsCalculator/coins.txt");
+    inFile.open("../coins.txt");
     if(!inFile.is_open()){
         std::cout << "Error opening input file!" << std::endl;
     }
@@ -158,6 +155,7 @@ int findName(std::string name, Customer customers[]){
 void displayCoins(Customer customers [], int target){
 
     std::cout << "Customer: " << customers[target].getName();
+    printf("\n");
     printf("%d cents\n", customers[target].getChange());
     printf("\n");
     printf("Change:\n");
@@ -187,7 +185,7 @@ void writeData(Customer customers[]){
     int index; std::string name; int change, coin0, coin1, coin2, coin3;
     std::ofstream outFile;
 
-    outFile.open("/Users/melodyflavel/CLionProjects/CoinsCalculator/change.csv");
+    outFile.open("../change.csv");
     if(!outFile.is_open()){
         std::cout << "Error opening output file!" << std::endl;
     }
