@@ -12,8 +12,8 @@ void storeData(Customer customers[]);
 void determineCoins(Customer customers[]);
 int displayMenu();
 int findName(std::string name, Customer customers[]);
-void displayCoins();
-void writeData();
+void displayCoins(Customer customers[], int index);
+void writeData(Customer customers[]);
 
 class Customer {
 private:
@@ -48,13 +48,6 @@ int main() {
 
     Customer customers[NUMBEROFCUSTOMERS];
     int option; std::string name; int index;
-    std::ofstream outFile;
-
-    outFile.open("/Users/melodyflavel/CLionProjects/CoinsCalculator/change.csv");
-    if(!outFile.is_open()){
-        std::cout << "Error opening output file!" << std::endl;
-        return 0;
-    }
 
     storeData(customers);
     determineCoins(customers);
@@ -69,11 +62,11 @@ int main() {
                 index = findName(name, customers);
                 std::cout << "Index: " << index;
                 std::cout << customers[index].getName();
-                // Display change
+                displayCoins(customers, index);
                 break;
             case 2:
-                // Write data
-                // Quit program
+                writeData(customers);
+                std::cout << "Quitting program...\n";
                 break;
             default:
                 std::cout << "Invalid option.\n";
@@ -101,6 +94,7 @@ void storeData(Customer customers[]){
         customers[index].setChange(change);
         index++;
     }
+    inFile.close();
 }
 
 void determineCoins(Customer customers[]){
@@ -161,10 +155,52 @@ int findName(std::string name, Customer customers[]){
     return indexAt;
 }
 
-void displayCoins(){
-  
+void displayCoins(Customer customers [], int target){
+
+    std::cout << "Customer: " << customers[target].getName();
+    printf("%d cents\n", customers[target].getChange());
+    printf("\n");
+    printf("Change:\n");
+
+    if(customers[target].coins[0] != 0)
+    {
+        printf("50 cents: %d\n", customers[target].coins[0]);
+    }
+    if(customers[target].coins[1] != 0)
+    {
+        printf("20 cents: %d\n", customers[target].coins[1]);
+    }
+    if(customers[target].coins[2] != 0)
+    {
+        printf("10 cents: %d\n", customers[target].coins[2]);
+    }
+    if(customers[target].coins[3] != 0)
+    {
+        printf("5 cents: %d\n", customers[target].coins[3]);
+    }
+    printf("\n");
+
 }
 
-void writeData(){
+void writeData(Customer customers[]){
 
+    int index; std::string name; int change, coin0, coin1, coin2, coin3;
+    std::ofstream outFile;
+
+    outFile.open("/Users/melodyflavel/CLionProjects/CoinsCalculator/change.csv");
+    if(!outFile.is_open()){
+        std::cout << "Error opening output file!" << std::endl;
+    }
+
+    for(int i = 0; i < NUMBEROFCUSTOMERS; i++){
+        name = customers[i].getName();
+        change = customers[i].getChange();
+        coin0 = customers[i].coins[0];
+        coin1 = customers[i].coins[1];
+        coin2 = customers[i].coins[2];
+        coin3 = customers[i].coins[3];
+
+        outFile << name << " " << change << " " << coin1 << " " << coin2 << " " << coin3 << std::endl;
+    }
+    outFile.close();
 }
