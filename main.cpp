@@ -48,9 +48,8 @@ public:
 int main() {
 
     Customer customers[NUMBEROFCUSTOMERS];
-
+    int option;
     std::ofstream outFile;
-
 
     outFile.open("/Users/melodyflavel/CLionProjects/CoinsCalculator/change.csv");
     if(!outFile.is_open()){
@@ -60,6 +59,25 @@ int main() {
 
     storeData(customers);
     determineCoins(customers);
+
+    do {
+
+        option = displayMenu();
+        switch(option){
+            case 1:
+                // Get name from user
+                // Search array for name
+                // Display change
+                break;
+            case 2:
+                // Write data
+                // Quit program
+                break;
+            default:
+                std::cout << "Invalid option.\n";
+                break;
+        }
+    } while (option != 2);
 
     return 0;
 }
@@ -112,9 +130,22 @@ void determineCoins(Customer customers[]){
     }
 }
 
+int displayMenu(){
 
-int showMenu(){
-    return 0;
+    int option;
+
+    menu:
+    std::cout << "Please select an option:\n";
+    std::cout << "1. Enter name\n";
+    std::cout << "2. Exit\n";
+    std::cin >> option;
+
+    if((option != 1) && (option != 2)){
+        std::cout << "Invalid option.\n";
+        goto menu;
+    }
+
+    return option;
 }
 
 void getName(){
