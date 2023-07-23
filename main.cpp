@@ -18,10 +18,9 @@ class Customer {
 private:
     std::string name;
     int change;
+    std::vector<int> coins;
 
 public:
-
-    int coins[DENOMINATIONS];
 
     void setName(std::string newName){
         name = newName;
@@ -35,11 +34,11 @@ public:
     int getChange(){
         return change;
     }
-    void setCoins(int newCoins[]){
-        std::copy(newCoins, newCoins+4, coins);
+    void setCoins(const std::vector<int> &newCoins){
+        coins = newCoins;
     }
-    int getCoins(){
-        return *coins;
+    std::vector<int> const &getCoins() const {
+        return coins;
     }
 };
 
@@ -96,30 +95,31 @@ void storeData(Customer customers[]){
 
 void determineCoins(Customer customers[]){
 
+    std::vector<int> customerCoins;
+
     for (int i = 0; i < NUMBEROFCUSTOMERS; i++){
-        customers[i].coins[0] = 0;
-        customers[i].coins[1] = 0;
-        customers[i].coins[2] = 0;
-        customers[i].coins[3] = 0;
+
+        customerCoins = {0, 0, 0, 0};
 
         int change = customers[i].getChange();
 
             while(change >= 50) {
-                customers[i].coins[0] = customers[i].coins[0] + 1;
+                customerCoins[0] = customerCoins[0] + 1;
                 change = change - 50;
             }
             while(change >= 20) {
-                customers[i].coins[1] = customers[i].coins[1] + 1;
+                customerCoins[1] = customerCoins[1] + 1;
                 change = change - 20;
             }
             while(change >= 10) {
-                customers[i].coins[2] = customers[i].coins[2] + 1;
+                customerCoins[2] = customerCoins[2] + 1;
                 change = change - 10;
             }
             while(change >= 5) {
-                customers[i].coins[3] = customers[i].coins[3] + 1;
+                customerCoins[3] = customerCoins[3] + 1;
                 change = change - 5;
         }
+            customers[i].setCoins(customerCoins);
     }
 }
 
@@ -160,21 +160,21 @@ void displayCoins(Customer customers [], int target){
     printf("\n");
     printf("Change:\n");
 
-    if(customers[target].coins[0] != 0)
+    if(customers[target].getCoins().at(0) != 0)
     {
-        printf("50 cents: %d\n", customers[target].coins[0]);
+        printf("50 cents: %d\n", customers[target].getCoins().at(0));
     }
-    if(customers[target].coins[1] != 0)
+    if(customers[target].getCoins().at(1) != 0)
     {
-        printf("20 cents: %d\n", customers[target].coins[1]);
+        printf("20 cents: %d\n", customers[target].getCoins().at(1));
     }
-    if(customers[target].coins[2] != 0)
+    if(customers[target].getCoins().at(2) != 0)
     {
-        printf("10 cents: %d\n", customers[target].coins[2]);
+        printf("10 cents: %d\n", customers[target].getCoins().at(2));
     }
-    if(customers[target].coins[3] != 0)
+    if(customers[target].getCoins().at(3) != 0)
     {
-        printf("5 cents: %d\n", customers[target].coins[3]);
+        printf("5 cents: %d\n", customers[target].getCoins().at(3));
     }
     printf("\n");
 
@@ -182,7 +182,7 @@ void displayCoins(Customer customers [], int target){
 
 void writeData(Customer customers[]){
 
-    int index; std::string name; int change, coin0, coin1, coin2, coin3;
+    int index; std::string name; int change;
     std::ofstream outFile;
 
     outFile.open("../change.csv");
@@ -191,14 +191,8 @@ void writeData(Customer customers[]){
     }
 
     for(int i = 0; i < NUMBEROFCUSTOMERS; i++){
-        name = customers[i].getName();
-        change = customers[i].getChange();
-        coin0 = customers[i].coins[0];
-        coin1 = customers[i].coins[1];
-        coin2 = customers[i].coins[2];
-        coin3 = customers[i].coins[3];
 
-        outFile << name << " " << change << " " << coin1 << " " << coin2 << " " << coin3 << std::endl;
+        outFile << customers[i].getName() << " " << customers[i].getChange() << " " << customers[i].getCoins().at(0) << " " << customers[i].getCoins().at(1) << " " << customers[i].getCoins().at(2) << " " << customers[i].getCoins().at(3) << std::endl;
     }
     outFile.close();
 }
